@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+version() {
+  echo "Git Cleanup v0.1.1"
+}
+
+main() {
+  local subcommand="$1"; shift
+
+  case $subcommand in
+    "-v"|"--version")
+      version
+      exit 0
+      ;;
+  esac
+
+  git branch --merged | grep -v "master" | grep -v "production" | grep -v "\*" | xargs git branch -d
+  git prune
+
+  exit 0
+}
+
+main "$@"
